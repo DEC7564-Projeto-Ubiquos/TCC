@@ -1,0 +1,331 @@
+<html>
+    <meta charset ='utf-8'/>
+    <meta name = 'viewport' content = 'width=device-width, initial-scale=1'>
+    <style type='text/css'> a:link {text-decoration:none;}  body {color: #cacaca; background-color: #000000 }</style>
+<head>
+    <script>
+        var connection = new WebSocket('ws://192.168.0.105:81/', ['arduino']);
+       
+        connection.onopen = function () {
+            connection.send('Message from Browser to ESP8266 Working!! ' + new Date()); 
+            connection.send('CLIENTE WebSocket' + new Date());
+            connection.send('Time: ' + new Date()); 
+            connection.send('!'+'1');
+        };
+        connection.onerror = function (error) {
+            console.log('WebSocket Error ', error);
+        };
+        connection.onmessage = function (e) {
+            console.log('Server: ', e.data);
+            var tempe=e.data;
+            var primeiro='';
+            var segundo='';
+            if(tempe.search('#RPM')>-1)
+            { 
+                primeiro=tempe.split('#RPM');
+                segundo=primeiro[1].split(' ');
+                rota=segundo[0];
+                document.getElementById('rota').innerHTML = rota;
+            }
+            if(tempe.search('#COMB')>-1)
+            { 
+                primeiro=tempe.split('#COMB');
+                segundo=primeiro[1].split(' ');
+                comb=segundo[0];
+                document.getElementById('comb').innerHTML = comb;
+                var alarmeComb=comb*1;
+                if(alarmeComb<=8)
+                {   
+                    document.getElementById('alarmeComb').innerHTML = "Pouco Combust&iacute;vel!";     
+                }
+                else
+                {   
+                    document.getElementById('alarmeComb').innerHTML = "";     
+                }
+                
+            }
+            if(tempe.search('#A_BMP')>-1)
+            { 
+                var primeiro=tempe.split('#A_BMP');
+                var segundo=primeiro[1].split(' ');
+                alti=segundo[0];
+                document.getElementById('alti').innerHTML = alti+' m';
+            }
+            if(tempe.search('#P_BMP')>-1)
+            { 
+                var primeiro=tempe.split('#P_BMP');
+                var segundo=primeiro[1].split(' ');
+                pres=segundo[0];
+                document.getElementById('pres').innerHTML = pres+' Pa';
+            }
+            if(tempe.search('#T_BMP')>-1)
+            { 
+                var primeiro=tempe.split('#T_BMP');
+                var segundo=primeiro[1].split(' ');
+                tBMP=segundo[0];
+                document.getElementById('T_Cabine').innerHTML = tBMP;
+            }
+            if(tempe.search('#T_EXT')>-1)
+            { 
+                var primeiro=tempe.split('#T_EXT');
+                var segundo=primeiro[1].split(' ');
+                texT=segundo[0];
+                document.getElementById('T_Externa').innerHTML = texT;
+            }
+            if(tempe.search('#ALM')>-1)
+            { 
+                var primeiro=tempe.split('#ALM');
+                var segundo=primeiro[1].split(' ');
+                raD=segundo[0];
+                if(raD=="Alerta!")
+                {   
+                    document.getElementById('alarmeNR').innerHTML = "N&iacute;vel Radiador!";     
+                }
+                else
+                {   
+                    document.getElementById('alarmeNR').innerHTML = "";     
+                }
+                
+            }
+            if(tempe.search('#T_RAD')>-1)
+            { 
+                var primeiro=tempe.split('#T_RAD');
+                var segundo=primeiro[1].split(' ');
+                traD=segundo[0];
+                document.getElementById('T_Radiador').innerHTML = traD;
+                var alarmeTagua=traD*1;
+                if(alarmeTagua>=95)
+                {   
+                    document.getElementById('alarmeTR').innerHTML = "Temperatura Radiador!";     
+                }
+                else
+                {   
+                    document.getElementById('alarmeTR').innerHTML = "";     
+                }
+            }
+            if(tempe.search('#T_COF')>-1)
+            { 
+                var primeiro=tempe.split('#T_COF');
+                var segundo=primeiro[1].split(' ');
+                tcoF=segundo[0];
+                document.getElementById('T_CoolerF').innerHTML = tcoF;
+            }
+            if(tempe.search('#T_COQ')>-1)
+            { 
+                var primeiro=tempe.split('#T_COQ');
+                var segundo=primeiro[1].split(' ');
+                tcoQ=segundo[0];
+                document.getElementById('T_CoolerQ').innerHTML = tcoQ;
+            }
+            var rtcS="seg";
+            var rtcD="11";
+            var rtcM="12";
+            var rtcA="13";
+            var rtcH="14";
+            var rtcm="15";
+            if(tempe.search('#RTC_T')>-1)
+            { 
+                var primeiro=tempe.split('#RTC_T');
+                var segundo=primeiro[1].split(' ');
+                rtcT=segundo[0];
+                document.getElementById('T_Sistema').innerHTML = rtcT;
+            }
+            if(tempe.search('#RTC_S')>-1)
+            { 
+                var primeiro=tempe.split('#RTC_S');
+                var segundo=primeiro[1].split(' ');
+                rtcS=segundo[0];
+            }
+            if(tempe.search('#RTC_D')>-1)
+            { 
+                var primeiro=tempe.split('#RTC_D');
+                var segundo=primeiro[1].split(' ');
+                rtcD=segundo[0];
+            }
+            if(tempe.search('#RTC_M')>-1)
+            { 
+                var primeiro=tempe.split('#RTC_M');
+                var segundo=primeiro[1].split(' ');
+                rtcM=segundo[0];
+            }
+            if(tempe.search('#RTC_A')>-1)
+            { 
+                var primeiro=tempe.split('#RTC_A');
+                var segundo=primeiro[1].split(' ');
+                rtcA=segundo[0];
+            }
+            if(tempe.search('#RTC_H')>-1)
+            { 
+                var primeiro=tempe.split('#RTC_H');
+                var segundo=primeiro[1].split(' ');
+                rtcH=segundo[0];
+            }
+            if(tempe.search('#RTC_m')>-1)
+            { 
+                var primeiro=tempe.split('#RTC_m');
+                var segundo=primeiro[1].split(' ');
+                rtcm=segundo[0];
+            }
+            var timeS = (rtcS+ ' '+rtcD+'-'+rtcM+'-'+rtcA+' '+rtcH+':'+rtcm);
+            document.getElementById('time').innerHTML = timeS;
+            connection.send('Time: ' + new Date()+'/r/n'); 
+        };
+        function marcDesm(caller) {
+        var checks = document.querySelectorAll("input[type='checkbox']"); 
+        console.log(checks.legth);   
+        for(let i = 0; i < checks.length; i++) {
+            checks[i].checked = checks[i] == caller; 
+            if(checks[i].checked==true)
+            {
+                console.log(i);
+            }  
+        }
+        };
+        function trataBox(obj) {
+            var a=String(obj.id);
+            var teste=document.getElementById(a).checked;
+            if(teste==true)
+            {
+                marcDesm(obj);
+            }
+            enviaEstadoAr();
+        };  
+        function enviaEstadoAr(){
+            var R0=document.getElementById('arAut').checked;
+            console.log(R0);
+            var R1=document.getElementById('Vent1').checked;
+            console.log(R1);
+            var R2=document.getElementById('Vent2').checked;
+            console.log(R2);
+            var R3=document.getElementById('Vent3').checked;
+            console.log(R3);
+            var estadoC =R0*1+R1*2+R2*4+R3*8;
+            connection.send('@'+estadoC);
+            console.log('estado das chaves'+estadoC);
+        };
+        function sendRef() {
+            var r = document.getElementById('r').value;
+            var ref = '#'+r;
+            console.log('RGB: ' + ref);
+            document.getElementById('T_Ajuste').innerHTML = r;
+            connection.send(ref); 
+        };
+
+    </script>
+</head>
+<body>
+    <div align=center style='margin:0;font-size:30px'>RedLine V1.0</div>
+    <div align=center>
+        <table>
+            <tr align=center style='height:30px;font-size:20px;color:red;' >
+                <td id="alarmeNR"></td>
+                <td id="alarmeTR"></td>
+                <td id="alarmeComb"></td>
+            </tr>
+        </table>
+    </div>
+    <div align=center style='width:80%;height:50px;border:1px solid #656535;background-color:#272727;color:#f0f0a0;margin:0 auto;'>
+        <table align=center >
+                <tr style="color:#f0f0a0;margin:0 auto;">
+                    <th style='font-size:15px'>Time</th>
+                    <th></th>
+                    <th style='font-size:15px'>Press&atildeo</th> 
+                    <th></th>
+                    <th style='font-size:15px'>Altitude</th>
+                    <th></th>
+                </tr>
+                <tr align=center style="color:#ffffff;font-weight: bold;">
+                    <td style="width:33%;"><div id='time' style='font-size:clamp(0.5em, 0.5em + 0.7vw, 1em);'>seg 20-12-22 22:22</div></td>
+                    <td></td>
+                    <td style='width:33%;'><div id='pres'>102104</div></td>  
+                    <td></td>
+                    <td style='width:33%;'><div id='alti'>-105 m</div></td>
+                    <td></td>
+                </tr>    
+        </table>           
+    </div><br>
+    <div align=center style="width:80%;height:70px;border:1px solid #656535;background-color:#272727;color:#b1b169;margin:0 auto">
+        &nbspTemperaturas em &nbsp<code>&deg</code>C&nbsp &nbsp
+        <table align=center style='color:#f0f0a0;'>
+                <tr>
+                    <th style='font-size:clamp(0.2em, 0.5em + 0.5vw, 1em);'>Sistema </th>
+                    <th style='font-size:clamp(0.2em, 0.5em + 0.5vw, 1em);'>Cabine  </th>
+                    <th style='font-size:clamp(0.2em, 0.5em + 0.5vw, 1em);'>Externa </th>  
+                    <th style='font-size:clamp(0.2em, 0.5em + 0.5vw, 1em);'>Radiador</th>
+                    <th style='font-size:clamp(0.2em, 0.5em + 0.5vw, 1em);'>Cooler F</th>
+                    <th style='font-size:clamp(0.2em, 0.5em + 0.5vw, 1em);'>Cooler Q</th>
+                </tr>
+                <tr style='color:#ffffff;font-size:20px;font-weight: bold;'>
+                    <td align=center ><div id='T_Sistema'  style='background-color:#070717;'>15</div></td>
+                    <td align=center ><div id='T_Cabine'   style='background-color:#070717;'>16</div></td>
+                    <td align=center ><div id='T_Externa'  style='background-color:#070717;'>17</div></td>  
+                    <td align=center ><div id='T_Radiador' style='background-color:#070717;'>18</div></td>
+                    <td align=center ><div id='T_CoolerF'  style='background-color:#070717;'>19</div></td>
+                    <td align=center ><div id='T_CoolerQ'  style='background-color:#070717;'>20</div></td>
+                </tr>    
+        </table>           
+    </div><br>
+    <div align=center style="width:60%;height:80px;border:1px solid #656535;background-color:#272727;color:#b1b169;margin:0 auto">
+                &nbspAjuste Temperatura AC&nbsp&nbsp
+                <table align=center style='color:#f0f0a0;'>
+                    <tr>&nbsp</tr>
+                    <tr  style='color:#b1b169;font-size:20px;'>
+                        <td align=center><div id='T_menos'   style='font-weight: bold; background-color:#272727;'></div></td>
+                        <td align=center style='color:#ffffff;font-size:20px;'><div id='T_Ajuste'  style='width:50px;font-weight: bold; background-color:#070717;'>(25)</div></td>
+                        <td align=center><div id='T_mais'    style='font-weight: bold; background-color:#272727;'><code>&deg;C&nbsp</code></div></td>  
+                    </tr>       
+                </table>  
+                <code style='color:#b1b169;font-size:15px;'>&darr;</code> - &nbsp</a><input id="r" type="range" class='bar' min="10" max="30" step="1" onchange="sendRef();" /> &nbsp+<code>&uarr;</code> 
+    </div><br>
+    <div align=center style="width:60%;height:25px;border:1px solid #656535;background-color:#272727;color:#f0f0a0;margin:0 auto">
+        <table style="border-collapse: collapse;color:#f0f0a0;font-size:15px;font-weight:bold;background-color:#070717;">
+            <tr>
+                <td>Ar Auto</td>
+                <td style='width:48px;'></td>
+                <td><input id='arAut' type='checkbox' onclick=trataBox(this);></td>
+            </tr>    
+        </table>      
+    </div><br> 
+    <div align=center style="width:60%;height:25px;border:1px solid #656535;background-color:#272727;color:#f0f0a0;margin:0 auto">
+        <table style="border-collapse: collapse;color:#f0f0a0;font-size:15px;font-weight:bold;background-color:#070717;">
+            <tr>
+                <td>VENT 1</td>
+                <td style='width:50px;'></td>
+                <td><input id='Vent1' type='checkbox' onclick=trataBox(this);></td>
+            </tr>    
+        </table>      
+    </div><br> 
+    <div align=center style="width:60%;height:25px;border:1px solid #656535;background-color:#272727;color:#f0f0a0;margin:0 auto">
+        <table style="border-collapse: collapse;color:#f0f0a0;font-size:15px;font-weight:bold;background-color:#070717;">
+            <tr>
+                <td>VENT 2</td>
+                <td style='width:50px;'></td>
+                <td><input id='Vent2' type='checkbox' onclick=trataBox(this);></td>
+            </tr>    
+        </table>      
+    </div><br> 
+    <div align=center style="width:60%;height:25px;border:1px solid #656535;background-color:#272727;color:#f0f0a0;margin:0 auto">
+        <table style="border-collapse: collapse;color:#f0f0a0;font-size:15px;font-weight:bold;background-color:#070717;">
+            <tr>
+                <td>VENT 3</td>
+                <td style='width:50px;'></td>
+                <td><input id='Vent3' type='checkbox' onclick=trataBox(this);></td>
+            </tr>    
+        </table>      
+    </div><br> 
+    <div align=center style="width:80%;height:70px;border:1px solid #656535;background-color:#272727;color:#f0f0a0;margin:0 auto">
+        <table align=center style='color:#f0f0a0;font-size:15px;font-weight: bold;'>
+                <tr>
+                    <th style='font-size:15px'>COMB (l)</th>
+                    <th></th>
+                    <th style='font-size:15px'>RMP</th>     
+                </tr>
+                <tr style='color:#ffffff;font-size:30px;text-align:center;font-weight:bold'>
+                    <td><div id='comb' style='width:100px;height:40px;border:0px;background-color:#070717;'>88</div></td>
+                    <td  style='width:60px;'></td>  
+                    <td><div id='rota' style='width:100px;height:40px;border:0px;background-color:#070717;'>2100</div></td>
+                </tr>    
+        </table>           
+    </div>   
+</body>
+</html>
