@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html>
+<meta charset ='utf-8'/>
+<meta name = 'viewport' content = 'width=device-width, initial-scale=1'>
+<style type='text/css'> a:link {text-decoration:none;}  body {color: blue; background-color: #DDC000 } </style>
+<div align=center style='margin:0;font-size:30px'>RedLine V1.0</div>
+<div align=center>
+    <table>
+        <tr align=center style='height:30px;font-size:20px;color:red;' >
+            <td id="alarmeNR"></td>
+            <td id="alarmeTR"></td>
+            <td id="alarmeComb"></td>
+        </tr>
+    </table>
+</div>
+<div align=center style="width:80%;height:50px;border:1px solid #BAA100;background-color:#CBB000;color:#2600FF;margin:0 auto"> 
+    <table align=center>
+          <tr style="margin:0 auto;">
+              <th style='font-size:15px;'>Time</th>
+              <th></th>
+              <th style='font-size:15px;'>Press&atildeo</th> 
+              <th></th>
+              <th style='font-size:15px;'>Altitude</th>
+              <th></th>
+          </tr>
+          <tr align=center style="color:#ffffff;font-weight: bold;">
+              <td style="width:33%;"><div style='font-size:clamp(0.5em, 0.5em + 0.7vw, 1em);'><!--bilSindice.substring(corte[0],corte[1]));-->seg 7-7-22 13:15</div></td>
+              <td></td>
+              <td style="width:33%;"><!--bilSindice.substring(corte[3]+1,corte[4]));-->102103 Pa</td>  
+              <td></td>
+              <td style="width:33%;"><!--bilSindice.substring(corte[4]+1,corte[5]));-->5 m</td>
+              <td></td>
+          </tr>    
+  </table>           
+</div><br>
+<div align=center style="width:80%;height:70px;border:1px solid #BAA100;background-color:#CBB000;color:#2600FF;margin:0 auto">
+  &nbspTemperaturas em &nbsp<code>&deg</code>C&nbsp &nbsp
+  <table align=center>
+          <tr>
+              <th style='font-size:clamp(0.2em, 0.5em + 0.5vw, 1em);'>Sistema</th>
+              <th style='font-size:clamp(0.2em, 0.5em + 0.5vw, 1em);'>Cabine</th>
+              <th style='font-size:clamp(0.2em, 0.5em + 0.5vw, 1em);'>Externa</th>  
+              <th style='font-size:clamp(0.2em, 0.5em + 0.5vw, 1em);'>Radiador</th>
+              <th style='font-size:clamp(0.2em, 0.5em + 0.5vw, 1em);'>Cooler F</th>
+              <th style='font-size:clamp(0.2em, 0.5em + 0.5vw, 1em);'>Cooler Q</th>
+          </tr>
+          <tr align=center style='color:#ffffff;font-size:20px;font-weight: bold;'>
+              <td><!--bilSindice.substring(corte[1]+1,corte[2]));-->11</td>
+              <td><!--bilSindice.substring(corte[2]+1,corte[3]));-->12</td>
+              <td><!--bilSindice.substring(corte[5]+1,corte[6]));-->13</td>  
+              <td><!--bilSindice.substring(corte[6]+1,corte[7]));-->14</td>
+              <td><!--bilSindice.substring(corte[7]+1,corte[8]));-->15</td>
+              <td>33</td>
+          </tr>    
+  </table>           
+</div><br>   
+<div align=center style="width:60%;height:50px;border:1px solid #BAA100;background-color:#CBB000;color:#2600FF;margin:0 auto">
+  &nbspAjuste Temperatura AC&nbsp<br>&nbsp<b>
+  <a href=\/Tdec=dec\><code>&darr;</code>- &nbsp</a>
+  (tempRef)
+  </b><code>&deg;</code>C&nbsp<b>
+  <a href=\/Tinc=inc\><code>&uarr;</code>+ &nbsp</a></b>    
+</div><br> 
+<div>
+<div align=center style="width:60%;height:20px;border:1px solid #BAA100;background-color:#CBB000;color:#2600FF;margin:0 auto">
+  AR Auto &nbsp &nbsp 
+  <a href=\/arAuto\> Off &nbsp</a>
+  &nbsp <a href=\/arAuto\> On </a>
+</div><br>  
+<div align=center style="width:60%;height:20px;border:1px solid #BAA100;background-color:#CBB000;color:#2600FF;margin:0 auto">
+  VENT 1 &nbsp &nbsp  
+  <a href=\/vent0\> Off &nbsp</a>
+  &nbsp <a href=\/vent1\> On </a>
+</div><br> 
+<div align=center style="width:60%;height:20px;border:1px solid #BAA100;background-color:#CBB000;color:#2600FF;margin:0 auto">
+  VENT 2 &nbsp &nbsp
+  <a href=\/vent0\> Off &nbsp</a>
+  &nbsp <a href=\/vent2\> On </a>
+</div><br>  
+<div align=center style="width:60%;height:20px;border:1px solid #BAA100;background-color:#CBB000;color:#2600FF;margin:0 auto">
+  VENT 3 &nbsp &nbsp 
+  <a href=\/vent0\> Off &nbsp</a>
+  &nbsp <a href=\/vent3\> On </a>
+</div><br>       
+<div align=center style="width:80%;height:70px;border:1px solid #BAA100;background-color:#CBB000;color:#2600FF;margin:0 auto"> 
+  <table align=center style='font-size:15px;font-weight: bold;'>
+          <tr>
+              <th style='font-size:15px;'>COMB (l)</th>
+              <th></th>
+              <th style='font-size:15px;'>RMP</th>     
+          </tr>
+          <tr style='color:#ffffff;font-size:30px;text-align:center;font-weight:bold'>
+              <td><!--bilSindice.substring(corte[8]+1,corte[9]));-->77</td>
+              <td style='width:90px;'></td>  
+              <td><!--bilSindice.substring(corte[9]+1,corte[10]));-->1300</td>
+          </tr>    
+  </table>           
+</div>
+</html>
