@@ -1,0 +1,259 @@
+<html>
+<meta charset ='utf-8'/>
+<style></style>              
+<head>              
+    <script>
+        //var connection = new WebSocket('ws://'+location.hostname+':81/', ['arduino']);
+        var connection = new WebSocket('ws://192.168.0.104:81/', ['arduino']);
+        connection.onopen = function () 
+        {
+            connection.send('Message from Browser to ESP8266 Working!! ' + new Date());                     
+            connection.send('CLIENTE WebSocket' + new Date());
+            connection.send('Time: ' + new Date()); 
+            connection.send('!'+'#');
+        };
+        connection.onerror = function (error) 
+        {
+            console.log('WebSocket Error ', error);
+        };
+        connection.onmessage = function (e) 
+        {
+            console.log('Server: ', e.data);
+            var tempe=e.data;
+            var primeiro='';
+            var segundo='';
+            if(tempe.search('#RPM')>-1)
+            { 
+                primeiro=tempe.split('#RPM'); 
+                segundo=primeiro[1].split(' ');
+                rota=segundo[0];
+                document.getElementById('rota').innerHTML = rota;
+            }
+            if(tempe.search('#COMB')>-1)
+            { 
+                primeiro=tempe.split('#COMB');
+                segundo=primeiro[1].split(' ');
+                comb=segundo[0];
+                document.getElementById('comb').innerHTML = comb;
+            }
+            if(tempe.search('#A_BMP')>-1)
+            { 
+                var primeiro=tempe.split('#A_BMP');
+                var segundo=primeiro[1].split(' ');
+                alti=segundo[0];
+                document.getElementById('alti').innerHTML = alti+' m';
+            }
+            if(tempe.search('#P_BMP')>-1)
+            { 
+                var primeiro=tempe.split('#P_BMP');
+                var segundo=primeiro[1].split(' ');
+                pres=segundo[0];
+                document.getElementById('pres').innerHTML = pres+' Pa';
+            }
+            if(tempe.search('#T_BMP')>-1)
+            { 
+                var primeiro=tempe.split('#T_BMP');
+                var segundo=primeiro[1].split(' ');
+                tBMP=segundo[0];
+                document.getElementById('tBMP').innerHTML = tBMP+' &#x2103';
+            }
+            if(tempe.search('#T_EXT')>-1)
+            { 
+                var primeiro=tempe.split('#T_EXT');
+                var segundo=primeiro[1].split(' ');
+                texT=segundo[0];
+                document.getElementById('tExt').innerHTML = texT;
+            }
+            if(tempe.search('#T_RAD')>-1)
+            { 
+                var primeiro=tempe.split('#T_RAD');
+                var segundo=primeiro[1].split(' ');
+                traD=segundo[0];
+                document.getElementById('tRad').innerHTML = traD;
+            }
+            if(tempe.search('#T_COF')>-1)
+            { 
+                var primeiro=tempe.split('#T_COF');
+                var segundo=primeiro[1].split(' ');
+                tcoF=segundo[0];
+                document.getElementById('tCoolF').innerHTML = tcoF;
+            }
+            if(tempe.search('#T_COQ')>-1)
+            { 
+                var primeiro=tempe.split('#T_COQ');
+                var segundo=primeiro[1].split(' ');
+                tcoQ=segundo[0];
+                document.getElementById('tCoolQ').innerHTML = tcoQ;
+            }
+            var rtcS='seg';
+            var rtcD='11';
+            var rtcM='12';
+            var rtcA='13';
+            var rtcH='14';
+            var rtcm='15';
+            if(tempe.search('#RTC_T')>-1)
+            { 
+                var primeiro=tempe.split('#RTC_T');
+                var segundo=primeiro[1].split(' ');
+                rtcT=segundo[0];
+                document.getElementById('tRTC').innerHTML = rtcT+' &#x2103';
+            }
+            if(tempe.search('#RTC_S')>-1)
+            { 
+                var primeiro=tempe.split('#RTC_S');
+                var segundo=primeiro[1].split(' ');
+                rtcS=segundo[0];
+            }
+            if(tempe.search('#RTC_D')>-1)
+            { 
+                var primeiro=tempe.split('#RTC_D');
+                var segundo=primeiro[1].split(' ');
+                rtcD=segundo[0];
+            }
+            if(tempe.search('#RTC_M')>-1)
+            { 
+                var primeiro=tempe.split('#RTC_M');
+                var segundo=primeiro[1].split(' ');
+                rtcM=segundo[0];
+            }
+            if(tempe.search('#RTC_A')>-1)
+            { 
+                var primeiro=tempe.split('#RTC_A');
+                var segundo=primeiro[1].split(' ');
+                rtcA=segundo[0];
+            }
+            if(tempe.search('#RTC_H')>-1)
+            { 
+                var primeiro=tempe.split('#RTC_H');
+                var segundo=primeiro[1].split(' ');
+                rtcH=segundo[0];
+            }
+            if(tempe.search('#RTC_m')>-1)
+            { 
+                var primeiro=tempe.split('#RTC_m');
+                var segundo=primeiro[1].split(' ');
+                rtcm=segundo[0];
+            }
+            var timeS = (rtcS+ ' '+rtcD+'-'+rtcM+'-'+rtcA+' '+rtcH+':'+rtcm);
+            console.log('tempo RTC '+timeS)
+            document.getElementById('time').innerHTML = timeS;
+        }; 
+        function sendAR() {
+                var r = document.getElementById('r').value;
+                var rEd = '#'+r;
+                connection.send(rEd); 
+        };
+        function sendGe() {
+                var g = document.getElementById('g').value;
+                var gEd = '$'+g;
+                connection.send(gEd); 
+        };
+            function acionaRele() {
+                var R1 = (document.getElementById('R1').checked);
+                R1 = R1*1;
+                console.log('R1 = ' + R1); 
+                var R2 = (document.getElementById('R2').checked);
+                R2 = R2*2;
+                console.log('R2 = ' + R2);
+                var R3 = (document.getElementById('R3').checked);
+                R3 = R3*4;
+                console.log('R3 = ' + R3);
+                var R4 = (document.getElementById('R4').checked);
+                R4 = R4*8;
+                console.log('R4 = ' + R4); 
+                var R5 = (document.getElementById('R5').checked);
+                R5 = R5*16;
+                console.log('R5 = ' + R5); 
+                var R6 = (document.getElementById('R6').checked);
+                R6 = R6*32;
+                console.log('R6 = ' + R6);
+                var R7 = (document.getElementById('R7').checked);
+                R7 = R7*64;
+                console.log('R7 = ' + R7);
+                var R8 = (document.getElementById('R8').checked);
+                R8 = R8*128;
+                console.log('R8 = ' + R8);
+                var estado = R1+R2+R3+R4+R5+R6+R7+R8;
+                console.log('estado = ' + estado);
+                connection.send('@'+estado);   
+        };
+    </script>  
+</head>
+<body>  
+    <div align=center style='width:80%;border:0px;margin:0px;'>  
+        <h2 style='color:blue'>RedLine </h2>
+        <b>modo TESTE</b>
+        <div id='time' style='font-size:clamp(0.3em, 0.5em + 0.7vw, 1em);'>time</div><br>
+            <b>Controles</b><br/>
+            Temp AC: <input id='r' type='range' min='0' max='100' step='1' value='0' onchange='sendAR();' /><br/>
+            Temp Ge: <input id='g' type='range' min='0' max='100' step='1' value='0' onchange='sendGe();' /><br/>
+        <br/><br/>               
+        <b>Reles</b><br/>
+        <table style='width:50%'>
+            <tr align='center'>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+            </tr>
+            <tr align='center'>
+                <td><input id='R1' type='checkbox' onclick=acionaRele();></td>
+                <td><input id='R2' type='checkbox' onclick=acionaRele();></td>
+                <td><input id='R3' type='checkbox' onclick=acionaRele();></td>
+                <td><input id='R4' type='checkbox' onclick=acionaRele();></td>
+                <td><input id='R5' type='checkbox' onclick=acionaRele();></td>
+                <td><input id='R6' type='checkbox' onclick=acionaRele();></td>
+                <td><input id='R7' type='checkbox' onclick=acionaRele();></td>
+                <td><input id='R8' type='checkbox' onclick=acionaRele();></td>
+            </tr>
+        </table>
+        <br/><br/>
+        <b>Sensores</b><br/>
+        <table style='width:80%;font-size:clamp(0.5em, 0.5em + 0.7vw, 2em);'>
+            <tr align='center'>
+                <td>T_RTC</td>
+                <td>T_BMP</td>
+                <td>P_BMP</td>
+                <td>A_BMP</td>
+            </tr>
+            <tr align='center'>
+                <th><div id='tRTC'></div></th>
+                <th><div id='tBMP'></div></th>
+                <th><div id='pres'></div></th>
+                <th><div id='alti'></div></th>               
+            </tr>
+        </table><br>
+        <table style='width:80%;font-size:clamp(0.5em, 0.5em + 0.7vw, 2em);'>
+            <tr align='center'>
+                <td>T_EXT</td>
+                <td>T_RAD</td>
+                <td>T_Cool F</td>
+                <td>T_Cool Q</td>
+            </tr>
+            <tr align='center'>
+                <th><div id='tExt'></div></th>
+                <th><div id='tRad'></div></th>
+                <th><div id='tCoolF'></div></th>
+                <th><div id='tCoolQ'></div></th>               
+            </tr>
+        </table><br><br>
+        <table style='width:80%;text-align: center;'>
+            <tr>
+                <th>COMB</th>
+                <th style='width:20%;'></th>
+                <th>RPM</th>
+            </tr>
+            <tr>
+                <td><div  style='text-align: center;width:100px;height:60px;border:1px solid #000000;background-color:#0000FF;color:#FFFFFF;margin:0 auto'><h2 id='comb'></h2></div></td>                                              
+                <td></td>
+                <td><div  style='text-align: center;width:100px;height:60px;border:1px solid #000000;background-color:#0000FF;color:#FFFFFF;margin:0 auto'><h2 id='rota'></h2></div></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
+      
